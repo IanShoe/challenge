@@ -38,4 +38,4 @@ jspm_packages
 
 
 
-config/local.js
+server/config/local.*
