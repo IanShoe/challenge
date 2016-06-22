@@ -4,4 +4,5 @@ module.exports = function(err, req, res, next) {
   // Or have a separate alert.js middleware
   // Follow whatever error model we come up with
   logger.error(err);
+  logger.error('Stack:', err.stack);
 };

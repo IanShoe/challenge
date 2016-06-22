@@ -7,6 +7,6 @@
 2. Get by ID
 3. Create New Issue
 4. Update Issue by ID
-5. Delete Issue by ID
+5. Close Issue by ID
 
 ##### Issue Comments

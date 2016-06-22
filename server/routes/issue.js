@@ -17,14 +17,14 @@ function _create(req, res, next) {
   });
 }
 
-function _deleteById(req, res, next) {
-  var id = req.params.id;
-  if (!id) {
-    return next('Issue ID Required');
+function _closeByNumber(req, res, next) {
+  var number = req.params.number;
+  if (!number) {
+    return next('Issue Number Required');
   }
-  issueService.deleteById(id, function (err, result) {
+  issueService.closeByNumber(number, function (err, result) {
     if (err) {
-      next('Error Deleting Issue By ID: ' + id + '\n' + err);
+      next('Error Closing Issue: ' + number + '\n' + err);
     } else {
       res.send(result);
     }
@@ -86,7 +86,7 @@ function _updateById(req, res, next) {
 
 module.exports = exports = {
   create: _create,
-  deleteById: _deleteById,
+  closeByNumber: _closeByNumber,
   getAll: _getAll,
   getById: _getById,
   patchById: _patchById,

@@ -17,7 +17,7 @@ function _create(newIssue, cb) {
       logger.error('Error Creating New Issue with Github Service');
     }
     var issue = new Issue(newIssue);
-    issue.save(function(err, dbIssue) {
+    issue.save(function (err, dbIssue) {
       if (err) {
         logger.error('Error Saving New Issue with Mongo');
       }
@@ -27,8 +27,19 @@ function _create(newIssue, cb) {
 
 }
 
-function _deleteById(id, cb) {
-  cb('NYI');
+function _closeByNumber(number, cb) {
+  var opts = {
+    user: config.github.user,
+    repo: config.github.repo,
+    number: number,
+    state: 'closed'
+  };
+  issueAPI.edit(opts, function (err, updatedIssue) {
+    if (err) {
+      logger.error('Error Closing Issue: %s ', number);
+    }
+    cb(err, updatedIssue);
+  });
 }
 
 function _getAll(query, cb) {
@@ -59,7 +70,7 @@ function _updateById(modifiedIssue, cb) {
 
 module.exports = {
   create: _create,
-  deleteById: _deleteById,
+  closeByNumber: _closeByNumber,
   getAll: _getAll,
   getById: _getById,
   patchById: _patchById,
