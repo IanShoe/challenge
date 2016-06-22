@@ -26,6 +26,22 @@ function _create(newIssue, cb) {
   });
 }
 
+function _createComment(number, comment, cb) {
+  var opts = {
+    user: config.github.user,
+    repo: config.github.repo,
+    number: number,
+    body: comment
+  };
+  issueAPI.createComment(opts, function(err, commentObj) {
+    if (err) {
+      logger.error('Error Creating Comment on Issue %s with Github Service', number);
+    }
+    // TODO: add comments array onto mongo model?
+    cb(err, commentObj);
+  });
+}
+
 function _closeByNumber(number, cb) {
   var opts = {
     user: config.github.user,
@@ -65,7 +81,7 @@ function _getByNumber(number, cb) {
     cb(err, issue);
   });
 
-  // Issue.findById(number).exec(cb);
+  // Issue.findByNumber(number).exec(cb);
 }
 
 function _patchByNumber(number, modifiedIssue, cb) {
@@ -101,6 +117,7 @@ function _updateByNumber(number, modifiedIssue, cb) {
 
 module.exports = {
   create: _create,
+  createComment: _createComment,
   closeByNumber: _closeByNumber,
   getAll: _getAll,
   getByNumber: _getByNumber,

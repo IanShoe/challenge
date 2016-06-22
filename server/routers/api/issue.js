@@ -11,4 +11,7 @@ router.put('/:number', routes.updateByNumber);
 router.patch('/:number/close', routes.closeByNumber);
 router.patch('/:number', routes.patchByNumber);
 
+// Comment routes, could probably abstract it into it's own but it's very tied to issues as well
+router.post('/:number/comment', routes.createComment);
+
 module.exports = router;

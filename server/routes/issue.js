@@ -17,6 +17,24 @@ function _create(req, res, next) {
   });
 }
 
+function _createComment(req, res, next) {
+  var number = req.params.number;
+  var comment = req.body.comment;
+  if (!number) {
+    return res.status(400).send('Issue Number Required');
+  }
+  if (!comment) {
+    return res.status(400).send('Body Required');
+  }
+  issueService.createComment(number, comment, function (err, issue) {
+    if (err) {
+      next('Error Creating Issue Comment ' + err);
+    } else {
+      res.send(issue);
+    }
+  });
+}
+
 function _closeByNumber(req, res, next) {
   var number = req.params.number;
   if (!number) {
@@ -88,6 +106,7 @@ function _updateByNumber(req, res, next) {
 
 module.exports = exports = {
   create: _create,
+  createComment: _createComment,
   closeByNumber: _closeByNumber,
   getAll: _getAll,
   getByNumber: _getByNumber,
