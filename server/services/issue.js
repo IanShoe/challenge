@@ -12,11 +12,13 @@ function _create(newIssue, cb) {
     user: config.github.user,
     repo: config.github.repo
   }, newIssue);
+  logger.info('Creating New Issue with Github');
   issueAPI.create(opts, function (err, newIssue) {
     if (err) {
       logger.error('Error Creating New Issue with Github Service');
     }
     var issue = new Issue(newIssue);
+    logger.info('Creating New Issue with Mongo');
     issue.save(function (err, dbIssue) {
       if (err) {
         logger.error('Error Saving New Issue with Mongo');
@@ -33,6 +35,7 @@ function _createComment(number, comment, cb) {
     number: number,
     body: comment
   };
+  logger.info('Creating New Comment on Issue %s with Github', number);
   issueAPI.createComment(opts, function(err, commentObj) {
     if (err) {
       logger.error('Error Creating Comment on Issue %s with Github Service', number);
@@ -49,6 +52,7 @@ function _closeByNumber(number, cb) {
     number: number,
     state: 'closed'
   };
+  logger.info('Closing Issue %s with Github', number);
   issueAPI.edit(opts, function (err, updatedIssue) {
     if (err) {
       logger.error('Error Closing Issue: %s ', number);
@@ -59,9 +63,12 @@ function _closeByNumber(number, cb) {
 
 function _getAll(query, cb) {
   // TODO: Demonstrate filter by repo/user?
+  logger.info('Retrieving all Issues with Github');
   issueAPI.getAll(query, function (err, issues) {
     if (err) {
       logger.error('Error Retrieving Issues from Github Service');
+    } else if (issues && issues.length) {
+      logger.info('Found %s Issues', issues.length);
     }
     cb(err, issues);
   });
@@ -74,6 +81,7 @@ function _getByNumber(number, cb) {
     repo: config.github.repo,
     number: number
   };
+  logger.info('Getting Issue %s with Github', number);
   issueAPI.get(opts, function (err, issue) {
     if (err) {
       logger.error('Error Retrieving Issue:', number);
@@ -98,10 +106,12 @@ function _updateByNumber(number, modifiedIssue, cb) {
     repo: config.github.repo,
     number: number
   }, modifiedIssue);
+  logger.info('Updating Issue %s with Github', number);
   issueAPI.edit(opts, function (err, updatedIssue) {
     if (err) {
       logger.error('Error Editing Issue: %s ', number);
     }
+    logger.info('Updating Issue %s with Mongo', number);
     Issue.findOneAndUpdate({
       id: modifiedIssue.id
     }, modifiedIssue, {
@@ -110,7 +120,7 @@ function _updateByNumber(number, modifiedIssue, cb) {
       if (err) {
         logger.error('Error Editing Issue: %s with mongo', number);
       }
-      cb(err, modifiedIssue);
+      cb(err, updatedIssue);
     });
   });
 }
