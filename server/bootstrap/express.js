@@ -7,7 +7,7 @@ var middleware = require('../middleware');
 var routers = require('../routers');
 
 var app = express();
-// var clientDir = path.join(__dirname, '../../client/challenge');
+// var clientDir = path.join(__dirname, '../../client');
 
 module.exports = function (config) {
   app.use(methodOverride());

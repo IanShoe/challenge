@@ -2,6 +2,12 @@ var issueService = require('../services/issue');
 
 function _create(req, res, next) {
   var issue = req.body;
+  if (!issue.title) {
+    return res.status(400).send('Title Required');
+  }
+  if (!issue.body) {
+    return res.status(400).send('Body Required');
+  }
   issueService.create(issue, function (err, issue) {
     if (err) {
       next('Error Creating Issue ' + err);

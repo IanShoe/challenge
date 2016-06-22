@@ -1,4 +1,6 @@
 var logger = console;
+var config = require('config');
+var _ = require('lodash');
 var mongoose = require('mongoose');
 var githubService = require('../services/github');
 
@@ -6,8 +8,23 @@ var Issue = mongoose.model('Issue');
 var issueAPI = githubService.issues;
 
 function _create(newIssue, cb) {
-  var org = new Issue(newIssue);
-  org.save(cb);
+  var opts = _.merge({
+    user: config.github.user,
+    repo: config.github.repo,
+  }, newIssue);
+  issueAPI.create(opts, function (err, newIssue) {
+    if (err) {
+      logger.error('Error Creating New Issue with Github Service');
+    }
+    var issue = new Issue(newIssue);
+    issue.save(function(err, dbIssue) {
+      if (err) {
+        logger.error('Error Saving New Issue with Mongo');
+      }
+      cb(err, newIssue);
+    });
+  });
+
 }
 
 function _deleteById(id, cb) {
