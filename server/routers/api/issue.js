@@ -5,7 +5,7 @@ var routes = require('../../routes/issue');
 var router = express.Router();
 
 router.get('/', routes.getAll);
-router.get('/:id', routes.getById);
+router.get('/:number', routes.getByNumber);
 router.post('/', routes.create);
 router.put('/:id', routes.updateById);
 router.patch('/:number/close', routes.closeByNumber);

@@ -10,7 +10,7 @@ var issueAPI = githubService.issues;
 function _create(newIssue, cb) {
   var opts = _.merge({
     user: config.github.user,
-    repo: config.github.repo,
+    repo: config.github.repo
   }, newIssue);
   issueAPI.create(opts, function (err, newIssue) {
     if (err) {
@@ -52,8 +52,20 @@ function _getAll(query, cb) {
   // Issue.find(query).exec(cb);
 }
 
-function _getById(id, cb) {
-  Issue.findById(id).exec(cb);
+function _getByNumber(number, cb) {
+  var opts = {
+    user: config.github.user,
+    repo: config.github.repo,
+    number: number
+  };
+  issueAPI.get(opts, function(err, issue) {
+    if (err) {
+      logger.error('Error Retrieving Issue:', number);
+    }
+    cb(err, issue);
+  });
+
+  // Issue.findById(number).exec(cb);
 }
 
 function _patchById(patchObj, cb) {
@@ -72,7 +84,7 @@ module.exports = {
   create: _create,
   closeByNumber: _closeByNumber,
   getAll: _getAll,
-  getById: _getById,
+  getByNumber: _getByNumber,
   patchById: _patchById,
   updateById: _updateById
 };

@@ -42,14 +42,14 @@ function _getAll(req, res, next) {
   });
 }
 
-function _getById(req, res, next) {
-  var id = req.params.id;
-  if (!id) {
-    return next('Issue ID Required');
+function _getByNumber(req, res, next) {
+  var number = req.params.number;
+  if (!number) {
+    return next('Issue Number Required');
   }
-  issueService.getById(id, function (err, issue) {
+  issueService.getByNumber(number, function (err, issue) {
     if (err) {
-      next('Error Getting Issue By ID: ' + id + '\n' + err);
+      next('Error Getting Issue By ID: ' + number + '\n' + err);
     } else {
       res.send(issue);
     }
@@ -88,7 +88,7 @@ module.exports = exports = {
   create: _create,
   closeByNumber: _closeByNumber,
   getAll: _getAll,
-  getById: _getById,
+  getByNumber: _getByNumber,
   patchById: _patchById,
   updateById: _updateById
 };
