@@ -24,7 +24,6 @@ function _create(newIssue, cb) {
       cb(err, newIssue);
     });
   });
-
 }
 
 function _closeByNumber(number, cb) {
