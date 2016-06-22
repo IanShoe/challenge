@@ -49,35 +49,37 @@ function _getByNumber(req, res, next) {
   }
   issueService.getByNumber(number, function (err, issue) {
     if (err) {
-      next('Error Getting Issue By ID: ' + number + '\n' + err);
+      next('Error Getting Issue By Number: ' + number + '\n' + err);
     } else {
       res.send(issue);
     }
   });
 }
 
-function _patchById(req, res, next) {
+function _patchByNumber(req, res, next) {
   var modifiedIssue = req.body;
-  if (!modifiedIssue._id) {
-    return next('Issue ID Required');
+  var number = req.params.number;
+  if (!number) {
+    return next('Issue Number Required');
   }
-  issueService.patchById(modifiedIssue, function (err, issue) {
+  issueService.patchByNumber(number, modifiedIssue, function (err, issue) {
     if (err) {
-      next('Error Patching Issue By ID', modifiedIssue.id + err);
+      next('Error Patching Issue By Number', modifiedIssue.id + err);
     } else {
       res.send(issue);
     }
   });
 }
 
-function _updateById(req, res, next) {
+function _updateByNumber(req, res, next) {
   var modifiedIssue = req.body;
-  if (!modifiedIssue._id) {
-    return next('Issue ID Required');
+  var number = req.params.number;
+  if (!number) {
+    return next('Issue Number Required');
   }
-  issueService.updateById(modifiedIssue, function (err, issue) {
+  issueService.updateByNumber(number, modifiedIssue, function (err, issue) {
     if (err) {
-      next('Error Updating Issue By ID', modifiedIssue._id + err);
+      next('Error Updating Issue By Number', modifiedIssue.number + err);
     } else {
       res.send(issue);
     }
@@ -89,6 +91,6 @@ module.exports = exports = {
   closeByNumber: _closeByNumber,
   getAll: _getAll,
   getByNumber: _getByNumber,
-  patchById: _patchById,
-  updateById: _updateById
+  patchByNumber: _patchByNumber,
+  updateByNumber: _updateByNumber
 };

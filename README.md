@@ -3,10 +3,10 @@
 ### Github API
 
 ##### Issues
-1. Get All Issues
-2. Get by ID
-3. Create New Issue
-4. Update Issue by ID
-5. Close Issue by ID
+- [x] Get All Issues
+- [x] Get by Number
+- [x] Create New Issue
+- [x] Update Issue by Number
+- [x] Close Issue by Number
 
 ##### Issue Comments
